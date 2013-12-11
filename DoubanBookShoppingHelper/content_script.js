@@ -202,17 +202,21 @@
 		getISBN : function(){
 			var contents = document.querySelectorAll("div.content b");
 			var is_book = false;
-			for (var i = 0; i <= contents.length; i++) {
-				var info = contents[i];
-				if(info.textContent === "出版社:"){
-					is_book = true;
+			try{
+				for (var i = 0; i <= contents.length; i++) {
+					var info = contents[i];
+					if(info.textContent === "出版社:"){
+						is_book = true;
+					}
+					if (is_book && info.textContent === "ISBN:") {
+						//console.log(info.nextSibling.data.split(",")[0].substring(1));
+						return info.nextSibling.data.split(",")[0].substring(1);
+					}
 				}
-				if (is_book && info.textContent === "ISBN:") {
-					//console.log(info.nextSibling.data.split(",")[0].substring(1));
-					return info.nextSibling.data.split(",")[0].substring(1);
-				}
+				return null;
+			}catch(e){
+				return null;
 			}
-			return null;
 		},
 		
 		setScore : function(book_info){
@@ -308,7 +312,11 @@
 		isComparable : true,
 
 		getISBN :function(){
-			return document.getElementById("summary-isbn").getElementsByClassName("dd")[0].innerHTML;
+			try{
+				return document.getElementById("summary-isbn").getElementsByClassName("dd")[0].innerHTML;				
+			}catch(e){
+				return null;
+			}
 		},
 
 		setScore : function(book_info){
@@ -390,13 +398,17 @@
 		isComparable : true,
 
 		getISBN : function(){
-			var intros = document.getElementsByClassName("show_info")[0].getElementsByClassName("intro")[0].getElementsByTagName("li");
-			var isbn = intros[intros.length-1].getElementsByTagName("i")[0];
-			if(isbn.innerHTML === "I S B N："){
-				//console.log(isbn.nextSibling.data);
-			    return isbn.nextSibling.data;
+			try{
+				var intros = document.getElementsByClassName("show_info")[0].getElementsByClassName("intro")[0].getElementsByTagName("li");
+				var isbn = intros[intros.length-1].getElementsByTagName("i")[0];
+				if(isbn.innerHTML === "I S B N："){
+					//console.log(isbn.nextSibling.data);
+				    return isbn.nextSibling.data;
+				}
+				return null;
+			}catch(e){
+				return null;
 			}
-			return null;
 		},
 
 		setScore : function(book_info){
@@ -485,7 +497,11 @@
 		isComparable : false,
 
 		getISBN : function(){
-			return document.getElementById("LabelISBN").innerHTML.split("-").join("");
+			try{
+				return document.getElementById("LabelISBN").innerHTML.split("-").join("");
+			}catch(e){
+				return null;
+			}
 		},
 
 		setScore : function(book_info){
@@ -654,15 +670,19 @@
 		isComparable : false,
 
 		getISBN : function(){
-			var list = document.getElementById("total").getElementsByTagName("td");
-			var isbn = /i\s?s\s?b\s?n/i;
-			for(var i=list.length-1;i>=0;i--){
-				if(isbn.test(list[i].previousSibling.getElementsByTagName("span")[0].textContent)){
-					//console.log(list[i].textContent);
-					return list[i].textContent;
+			try{
+				var list = document.getElementById("total").getElementsByTagName("td");
+				var isbn = /i\s?s\s?b\s?n/i;
+				for(var i=list.length-1;i>=0;i--){
+					if(isbn.test(list[i].previousSibling.getElementsByTagName("span")[0].textContent)){
+						//console.log(list[i].textContent);
+						return list[i].textContent;
+					}
 				}
+				return null;
+			}catch(e){
+				return null;
 			}
-			return null;
 		},
 
 		setScore : function(book_info){
@@ -801,9 +821,8 @@
 		//console.log(curSite.name);
 		//console.log(isbn);
 		try{
-			setDoubanData(isbn);			
+			setDoubanData(isbn);
 		}catch(e){
-			
 		}
 	};
 
