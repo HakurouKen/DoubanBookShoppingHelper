@@ -800,7 +800,11 @@
 
 		//console.log(curSite.name);
 		//console.log(isbn);
-		setDoubanData(isbn);
+		try{
+			setDoubanData(isbn);			
+		}catch(e){
+			
+		}
 	};
 
 	init();
