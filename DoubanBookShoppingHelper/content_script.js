@@ -117,11 +117,11 @@
 		var score_row;
 		
 		if(num_raters === 0){
-			score_show = '<span style="font-size:13px;">没有人评价这本书</span>';
+			score_show = '<span>没有人评价这本书</span>';
 		}else if(num_raters < 10){
-			score_show = '<span style="font-size:13px;">少于10人评价这本书</span>';
+			score_show = '<span>少于10人评价这本书</span>';
 		}else if(num_raters >= 10){
-			score_show = '<span style="padding:5px;">' + average_score + '</span><a id="douban_collections" style="text-decoration:none;font-size:13px" href="http://book.douban.com/subject/'
+			score_show = '<span style="padding:5px;">' + average_score + '</span><a id="douban_collections" style="text-decoration:none" href="http://book.douban.com/subject/'
 						+ book_id +'/collections" target="_blank">(共' + num_raters + '人评价)</a>';
 		}else{
 			score_show = null;
@@ -663,7 +663,7 @@
 
 		name : "suning",
 
-		checker : /(https?:\/\/)?(www)\.suning\.com\/.*/,
+		checker : /(https?:\/\/)?(product)\.suning\.com\/.*/,
 
 		logo : "http://www.suning.com/favicon.ico",
 
@@ -671,12 +671,12 @@
 
 		getISBN : function(){
 			try{
-				var list = document.getElementById("total").getElementsByTagName("td");
+				var list = document.getElementById("total").getElementsByTagName("dt");
 				var isbn = /i\s?s\s?b\s?n/i;
 				for(var i=list.length-1;i>=0;i--){
-					if(isbn.test(list[i].previousSibling.getElementsByTagName("span")[0].textContent)){
-						//console.log(list[i].textContent);
-						return list[i].textContent;
+					if(isbn.test(list[i].textContent)){
+						//console.log(list[i].nextSibling.textContent);
+						return list[i].nextSibling.textContent;
 					}
 				}
 				return null;
@@ -687,9 +687,9 @@
 
 		setScore : function(book_info){
 			//console.log(JSON.stringify(book_info));
-			var score_row = document.createElement("tr"),
-				label = document.createElement("th"),
-				rating = document.createElement("td"),
+			var score_row = document.createElement("dl"),
+				label = document.createElement("dt"),
+				rating = document.createElement("dd"),
 				stars = document.createElement("span"),
 				score = document.createElement("span"),
 				raters = document.createElement("a"),
@@ -704,6 +704,8 @@
 			var link_style = link.style,
 				score_style = score.style;
 
+			score_row.className = "width";
+
 			label.innerHTML = "豆瓣评分：";
 			label.style.lineHeight = "14px";
 
@@ -713,7 +715,7 @@
 				rating.appendChild(stars);
 				
 				link.innerHTML = '<span><a href="http://book.douban.com/subject/'+ book_id +'/" target="_blank">去豆瓣看这本书</a></span>';
-				link_style.fontSize = "13px";
+				link_style.fontSize = "12px";
 				link_style.color = "#6890C2";
 				link_style.textDecoration = "none";
 				link_style.display = "inline-block";
@@ -725,13 +727,12 @@
 			score.innerHTML = '<span>' + score_show + '</span>';
 			score_style.marginLeft = "10px";
 			score_style.marginRight = "10px";
-			score_style.fontSize = "13px";
+			score_style.fontSize = "12px";
 			score_style.display = "inline-block";
 			score_style.lineHeight = "14px";
 			rating.appendChild(score);
 
 			rating.appendChild(link);
-			rating.colSpan = "3";
 			score_row.appendChild(label);
 			score_row.appendChild(rating);
 			document.getElementById("total").appendChild(score_row);

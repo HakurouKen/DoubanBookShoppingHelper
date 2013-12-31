@@ -1,6 +1,6 @@
 { 
 	"name": "Douban Book Shopping Helper",  
-	"version": "2.0.2", 
+	"version": "2.1.0", 
   "manifest_version": 2,
 	"description" : "为各大购书网站的界面添加豆瓣评分与链接，并提供价格对比", 
   "content_scripts" : [
@@ -12,7 +12,7 @@
         "*://product.dangdang.com/*",
         "*://book.beifabook.com/product/*",
         "*://product.china-pub.com/*",
-        "*://www.suning.com/emall/*"
+        "*://product.suning.com/*"
         ],
       "js" : ["content_script.js"]
     }
