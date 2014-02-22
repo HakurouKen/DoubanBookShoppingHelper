@@ -398,25 +398,20 @@
 		isComparable : true,
 
 		getISBN : function(){
-			try{
-				var intros = document.getElementsByClassName("show_info")[0].getElementsByClassName("intro")[0].getElementsByTagName("li");
-				var isbn = intros[intros.length-1].getElementsByTagName("i")[0];
-				if(isbn.innerHTML === "I S B N："){
-					//console.log(isbn.nextSibling.data);
-				    return isbn.nextSibling.data;
+			var msg_box = document.getElementsByClassName("book_messbox")[0].getElementsByClassName("m_t6"),
+				i = msg_box.length - 1;
+			for( ; i > 0 ; i--){
+				if( msg_box[i].getElementsByClassName("show_info_left")[0].textContent === "ＩＳＢＮ"){
+					return msg_box[i].getElementsByClassName("show_info_right")[0].textContent;
 				}
-				return null;
-			}catch(e){
-				return null;
 			}
 		},
 
 		setScore : function(book_info){
 			//console.log(JSON.stringify(book_info));
-			var wrapper = document.createElement("li"),
-				douban = document.createElement("span"),
-				label = document.createElement("span"),
-				rating = document.createElement("span"),
+			var wrapper = document.createElement("div"),
+				label = document.createElement("div"),
+				rating = document.createElement("div"),
 				stars = document.createElement("span"),
 				score = document.createElement("span"),
 				raters = document.createElement("a"),
@@ -433,14 +428,10 @@
 
 			label.innerHTML = "豆瓣评分：";
 
-			rating.appendChild(stars);
-
 			score_show = checkScore(num_raters,average_score,book_id);
 			if(score_show){
 				setStarStyle(stars,average_score,{
 					"margin-top":"0px",
-					"position":"relative",
-					"top":"2px"
 				});
 
 				link.innerHTML = '<span><a href="http://book.douban.com/subject/'+ book_id +'/" target="_blank">去豆瓣看这本书</a></span>';
@@ -453,34 +444,41 @@
 				score_show = '<span><a href="http://book.douban.com" target="_blank" style="font-size:12px;">没在豆瓣找到这本书,去豆瓣逛逛?</a></span>';
 			}
 
+			rating.appendChild(stars);
+			
 			score.innerHTML = '<span>' + score_show + '</span>';
 			score_style.marginLeft = "10px";
 			score_style.marginRight = "10px";
 			score_style.fontSize = "13px";
 			score_style.display = "inline-block";
 			rating.appendChild(score);
-
 			rating.appendChild(link);
-			douban.appendChild(label);
-			douban.appendChild(rating);
-			wrapper.appendChild(douban);
-			document.getElementsByClassName("intro")[0].appendChild(wrapper);
+
+			label.className = "show_info_left";
+			rating.className = "show_info_right";
+			wrapper.appendChild(label);
+			wrapper.appendChild(rating);
+
+			wrapper.className = "clearfix m_t6";
+			document.getElementsByClassName("book_messbox")[0].appendChild(wrapper);
 		},
 
 		setPrice : function(price_info){
 			var price_content = getAllPriceContent(this,price_info),
-				wrapper = document.createElement("li"),
-				price_wrapper = document.createElement("span"),
+				wrapper = document.createElement("div"),
+				price_wrapper = document.createElement("div"),
 				label = document.createElement("span");
 
-			label.textContent = "比价：";
-			label.className = "ws2";
+			label.textContent = "比 价 ：";
+			label.className = "show_info_left";
 
-			price_wrapper.class="c1";
-			price_wrapper.appendChild(label);
+			price_wrapper.className="show_info_right";
 			price_wrapper.appendChild(price_content);
+
+			wrapper.className = "clearfix m_t6";
+			wrapper.appendChild(label);
 			wrapper.appendChild(price_wrapper);
-			document.getElementsByClassName("intro")[0].appendChild(wrapper);
+			document.getElementsByClassName("book_messbox")[0].appendChild(wrapper);
 		}
 	};
 
