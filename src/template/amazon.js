@@ -3,6 +3,7 @@
 		<span style="color:#666;">|</span>
 		<span class="title">豆瓣评价：</span>
 		<span class="content">
+			<% try{ %>
 			<span class="star" style="background-position:0 <%=(-14)*(10-Math.floor(parseFloat(rating.average)+0.8))%>px"></span>
 			<span class="score"><%=rating.average%></span>
 			<span class="raters">
@@ -18,6 +19,9 @@
 				<%}%>
 			</span>
 			<a href="http://book.douban.com/subject/<%=id%>" target="_blank">去豆瓣看这本书</a>
+			<% } catch(e){ %>
+				<span class="no">没有找到这本书...</span>
+			<% } %>
 		</span>
 	</span>
 </div>

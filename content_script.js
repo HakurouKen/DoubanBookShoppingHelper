@@ -155,6 +155,7 @@ var douban = (function(window,document,undefined){
 			name: 'amazon',
 			cName: '亚马逊',
 			checker: /^(https?:\/\/)?(www)?\.amazon\.(com|cn)\/.*/,
+			icon: 'http://w',
 			getISBN: function(){
 				var infos = document.querySelectorAll('#detail_bullets_id .content li b'),
 					isbn;
@@ -283,7 +284,7 @@ var douban = (function(window,document,undefined){
 
 	function init(){
 		var isbn = Sites.curSite.getISBN();
-
+		//console.log(isbn);
 		douban.getInfo(isbn,function(data){
 			var json = JSON.parse(data);
 			//console.log(json);

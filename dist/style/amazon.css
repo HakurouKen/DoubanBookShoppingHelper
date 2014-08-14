@@ -16,3 +16,5 @@
       #douban_info .rate .content .score {
         padding: 0 2px;
         color: red; }
+      #douban_info .rate .content .no {
+        color: #666; }
