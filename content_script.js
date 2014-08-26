@@ -172,7 +172,12 @@ var douban = (function(window,document,undefined){
 
 				return isbn;
 			},
-			insertTo: document.getElementById('centerCol'),
+			insertTo: document.getElementById('centerCol') 
+					|| (function(d){
+						var elem = d.getElementById('productGuarantee').parentNode;
+						elem.style.lineHeight = '22px';
+						return elem;
+			})(document),
 			insertAfter: document.getElementById('tellAFriendJumpbar_feature_div')
 		};
 
