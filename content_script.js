@@ -151,11 +151,29 @@ var douban = (function(window,document,undefined){
 
 !function(window,document,undefined){
 	var Sites = (function(window,document,undefined){
+		var Site = function(name,cName,checker,getISBN,insertTo,insertAfter){
+			var o;
+			if(util.type(name) === 'object'){
+				o = name;
+				name = o.name;
+				cName = o.cName;
+				checker = o.checker;
+				getISBN = o.getISBN;
+				insertTo = o.insertTo;
+				insertAfter = o.insertAfter;
+			}
+			this.name = name;
+			this.cName = cName;
+			this.checker = checker;
+			this.getISBN = getISBN;
+			this.insertTo = insertTo || document.body;
+			this.insertAfter = insertAfter;
+			return this;
+		}
 		var Amazon = {
 			name: 'amazon',
 			cName: '亚马逊',
 			checker: /^(https?:\/\/)?(www)?\.amazon\.(com|cn)\/.*/,
-			icon: 'http://w',
 			getISBN: function(){
 				var infos = document.querySelectorAll('#detail_bullets_id .content li b'),
 					isbn;
@@ -172,13 +190,16 @@ var douban = (function(window,document,undefined){
 
 				return isbn;
 			},
-			insertTo: document.getElementById('centerCol') 
-					|| (function(d){
+			insertTo: function(){
+				return document.getElementById('centerCol') || (function(d){
 						var elem = d.getElementById('productGuarantee').parentNode;
 						elem.style.lineHeight = '22px';
 						return elem;
-			})(document),
-			insertAfter: document.getElementById('tellAFriendJumpbar_feature_div')
+				})(document);
+			},
+			insertAfter: function(){
+				return document.getElementById('tellAFriendJumpbar_feature_div');
+			}
 		};
 
 		var Jd = {
@@ -206,7 +227,9 @@ var douban = (function(window,document,undefined){
 
 				return isbn;
 			},
-			insertTo: document.getElementById('summary')
+			insertTo: function(){
+				return document.getElementById('summary');
+			}
 		};
 
 		var Dangdang = {
@@ -234,7 +257,9 @@ var douban = (function(window,document,undefined){
 
 				return isbn;
 			},
-			insertTo: document.querySelector('.book_messbox[name=Infodetail_pub]')
+			insertTo: function(){
+				return document.querySelector('.book_messbox[name=Infodetail_pub]');
+			}
 		};
 
 		var cur,
@@ -265,8 +290,8 @@ var douban = (function(window,document,undefined){
 		            parentElem = utils.type(parentElem) === "string" ? document.querySelector(parentElem) : parentElem;
 		            prevElem = utils.type(prevElem) === "string" ? document.querySelector(prevElem) : prevElem;
 		            var html = utils.renderTpl(tpl, data),
-		                dom = utils.toDom(html);
-		            next = prevElem ? prevElem.nextElementSibling : null;
+		                dom = utils.toDom(html),
+		                next = prevElem ? prevElem.nextElementSibling : null;
 		            //console.log(html);
 		            if (!!next) {
 		                parentElem.insertBefore(dom, next);
@@ -282,7 +307,7 @@ var douban = (function(window,document,undefined){
 			support: support,
 			curSite: cur,
 			insert: function(data){
-				insertToPage(cur.name,data,cur.insertTo,cur.insertAfter);
+				insertToPage(cur.name,data,cur.insertTo() , cur.insertAfter&&cur.insertAfter() );
 			}
 		};
 	})(window,document);
